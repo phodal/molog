@@ -7,7 +7,7 @@ plugins:
 custom:
   stage: ${opt:stage, self:provider.stage}
   customDomain:
-    domainName: x.pho.im
+    domainName: log.pho.im
     basePath: ''
     stage: ${self:provider.stage}
     createRoute53Record: true
