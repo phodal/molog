@@ -52,12 +52,6 @@ resources:
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
-          - AttributeName: log
-            AttributeType: S
-          - AttributeName: component
-            AttributeType: S
-          - AttributeName: env
-            AttributeType: S
         KeySchema:
           - AttributeName: id
             KeyType: HASH
