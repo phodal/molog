@@ -1,18 +1,33 @@
 const uuid = require('uuid');
 const AWS = require('aws-sdk');
+const superstruct =  require('superstruct');
+let struct = superstruct.struct;
+
+const Log = struct({
+  data: 'string',
+  env: 'string',
+  component: 'string'
+})
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 module.exports.handler = (event, context, callback) => {
 
   const timestamp = new Date().getTime();
-  const data = JSON.parse(event.body);
-  if (typeof data.text !== 'string') {
-    console.error('Validation Failed');
+  const parsedData = JSON.parse(event.body);
+  if (!Log.test(parsedData)) {
+    let result = Log.validate(parsedData)
+    const { message, path, data, type, value } = result
     callback(null, {
       statusCode: 400,
       headers: { 'Content-Type': 'text/plain' },
-      body: 'Couldn\'t create the todo item.',
+      body: JSON.stringify({ 
+        message: message, 
+        path: path, 
+        data: data, 
+        type: type, 
+        value: value 
+      }, null, 2),
     });
     return;
   }
@@ -21,10 +36,9 @@ module.exports.handler = (event, context, callback) => {
     TableName: process.env.DYNAMODB_TABLE,
     Item: {
       id: uuid.v1(),
-      data: data.data,
-      env: data.env,
+      data: parsedData.data,
+      env: parsedData.env,
       component: component,
-      checked: false,
       createdAt: timestamp,
       updatedAt: timestamp,
     },
