@@ -50,10 +50,16 @@ resources:
       DeletionPolicy: Retain
       Properties:
         AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
           - AttributeName: log
             AttributeType: S
+          - AttributeName: component
+            AttributeType: S
+          - AttributeName: env
+            AttributeType: S
         KeySchema:
-          - AttributeName: log
+          - AttributeName: id
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1
