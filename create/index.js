@@ -2,6 +2,7 @@ const uuid = require('uuid');
 const AWS = require('aws-sdk');
 const superstruct =  require('superstruct');
 let struct = superstruct.struct;
+let stringify = require('json-stringify-safe');
 
 const Log = struct({
   data: 'string',
@@ -17,17 +18,10 @@ module.exports.handler = (event, context, callback) => {
   const parsedData = JSON.parse(event.body);
   if (!Log.test(parsedData)) {
     let result = Log.validate(parsedData)
-    const { message, path, data, type, value } = result
     callback(null, {
       statusCode: 400,
       headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({ 
-        message: message, 
-        path: path, 
-        data: data, 
-        type: type, 
-        value: value 
-      }, null, 2),
+      body: result.toString()
     });
     return;
   }
