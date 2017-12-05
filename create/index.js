@@ -12,6 +12,24 @@ const Log = struct({
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
+let Stringify = function (originData) {
+// Note: cache should not be re-used by repeated calls to JSON.stringify.
+  let cache = [];
+  JSON.stringify(originData, function (key, value) {
+    if (typeof value === 'object' && value !== null) {
+      if (cache.indexOf(value) !== -1) {
+        // Circular reference found, discard key
+        return;
+      }
+      // Store value in our collection
+      cache.push(value);
+    }
+    return value;
+  });
+  cache = null; // Enable garbage collection
+  return originData;
+};
+
 module.exports.handler = (event, context, callback) => {
 
   const timestamp = new Date().getTime();
@@ -21,7 +39,7 @@ module.exports.handler = (event, context, callback) => {
     callback(null, {
       statusCode: 400,
       headers: { 'Content-Type': 'text/plain' },
-      body: result.toString()
+      body: Stringify(result)
     });
     return;
   }
