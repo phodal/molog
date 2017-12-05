@@ -1,4 +1,4 @@
-const superstruct =  require('superstruct');
+const superstruct = require('superstruct');
 let struct = superstruct.struct;
 
 const Log = struct({
@@ -8,10 +8,23 @@ const Log = struct({
 })
 
 let result = Log.validate({})
-console.log(result.toString())
-const { message, path, data, type, value } = result
-log({ message, path, data, type, value })
 
-function log(data) {
-console.log(JSON.stringify(data, null ,2))
-}
+let Stringify = function (originData) {
+// Note: cache should not be re-used by repeated calls to JSON.stringify.
+  let cache = [];
+  JSON.stringify(originData, function (key, value) {
+    if (typeof value === 'object' && value !== null) {
+      if (cache.indexOf(value) !== -1) {
+        // Circular reference found, discard key
+        return;
+      }
+      // Store value in our collection
+      cache.push(value);
+    }
+    return value;
+  });
+  cache = null; // Enable garbage collection
+  return originData;
+};
+
+console.log(Stringify(result))
