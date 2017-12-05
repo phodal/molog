@@ -39,7 +39,7 @@ module.exports.handler = (event, context, callback) => {
     callback(null, {
       statusCode: 400,
       headers: { 'Content-Type': 'text/plain' },
-      body: Stringify(result)
+      body: result.toString()
     });
     return;
   }
