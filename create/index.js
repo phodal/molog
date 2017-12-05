@@ -2,7 +2,6 @@ const uuid = require('uuid');
 const AWS = require('aws-sdk');
 const superstruct =  require('superstruct');
 let struct = superstruct.struct;
-let stringify = require('json-stringify-safe');
 
 const Log = struct({
   data: 'string',
