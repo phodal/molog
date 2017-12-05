@@ -27,4 +27,5 @@ let Stringify = function (originData) {
   return originData;
 };
 
-console.log(Stringify(result))
+result[0].errors = Stringify(result)[0].errors
+console.log(Stringify(result)[0])
