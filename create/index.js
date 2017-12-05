@@ -11,34 +11,21 @@ const Log = struct({
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
-let Stringify = function (originData) {
-// Note: cache should not be re-used by repeated calls to JSON.stringify.
-  let cache = [];
-  JSON.stringify(originData, function (key, value) {
-    if (typeof value === 'object' && value !== null) {
-      if (cache.indexOf(value) !== -1) {
-        // Circular reference found, discard key
-        return;
-      }
-      // Store value in our collection
-      cache.push(value);
-    }
-    return value;
-  });
-  cache = null; // Enable garbage collection
-  return originData;
-};
-
 module.exports.handler = (event, context, callback) => {
 
   const timestamp = new Date().getTime();
   const parsedData = JSON.parse(event.body);
+  console.log(event, parsedData)
   if (!Log.test(parsedData)) {
     let result = Log.validate(parsedData)
     callback(null, {
       statusCode: 400,
       headers: { 'Content-Type': 'text/plain' },
-      body: result.toString()
+      body: {
+        data: event.body,
+        error: result.toString(),
+        event: event
+      }
     });
     return;
   }
@@ -49,7 +36,7 @@ module.exports.handler = (event, context, callback) => {
       id: uuid.v1(),
       data: parsedData.data,
       env: parsedData.env,
-      component: component,
+      component: parsedData.component,
       createdAt: timestamp,
       updatedAt: timestamp,
     },
