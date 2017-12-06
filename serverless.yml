@@ -3,6 +3,7 @@ service: molog
 
 plugins:
   - serverless-domain-manager
+  - serverless-finch
 
 custom:
   stage: ${opt:stage, self:provider.stage}
@@ -11,6 +12,9 @@ custom:
     basePath: ''
     stage: ${self:provider.stage}
     createRoute53Record: true
+  client:
+    bucketName: static.pho.im
+    distributionFolder: client/dist
 
 provider:
   name: aws
