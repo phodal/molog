@@ -27,17 +27,34 @@
 </nav>
 
 <div class="container">
+  <div id="logs">
 
+  </div>
 </div>
 
 <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
 <script>
-// A $( document ).ready() block.
 $( document ).ready(function() {
   $.get("https://log.pho.im/homepage/dev/logs", function(response) {
-    console.log(response)
+    for (var i = 0; i < response.length; i++) {
+      var itemId = 'item-' + i
+      var $item = $("<div>", {
+        id: itemId,
+        class: 'card'
+      })
+      $('#logs').append($item)
+
+      var cardHeader = $("<div>", {class: 'card-header text-white'});
+      $item.append(cardHeader)
+
+      var cardBody = $("<div>", {
+        class: 'card-body',
+        text: JSON.stringify(JSON.parse(response[i].data))
+      });
+      $item.append(cardBody)
+    }
   })
 });
 </script>
