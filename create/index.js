@@ -36,8 +36,7 @@ module.exports.handler = (event, context, callback) => {
       data: parsedData.data,
       env: parsedData.env,
       component: parsedData.component,
-      createdAt: timestamp,
-      updatedAt: timestamp,
+      createdAt: timestamp
     },
   };
 

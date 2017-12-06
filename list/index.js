@@ -6,7 +6,10 @@ const params = {
 };
 
 module.exports.list = (event, context, callback) => {
-  console.log(params)
+  params.Key = {
+    env: event.pathParameters.env,
+    component: event.pathParameters.component,
+  };
   dynamoDb.scan(params, (error, result) => {
     if (error) {
       console.error(error);
