@@ -160,7 +160,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                     encodeURIComponent(JSON.stringify(this.data)) +
                     '&cw=' + screen.width + '&ch=' + screen.height +
                     '&e=' + encodeURIComponent(this.environment);
-      return (win.location.protocol+'//{{sherlog_url}}/{{pixel_name}}?ts='+(new Date().getTime())+params);
+      return (win.location.protocol+'//static.pho.im/?ts='+(new Date().getTime())+params);
     },
 
     /**
