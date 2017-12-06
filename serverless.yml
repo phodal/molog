@@ -43,7 +43,7 @@ functions:
           path: /{component}/{env}/{id}
           method: get
   list:
-    handler: list.index
+    handler: list/index.list
     events:
       - http:
           path: /{component}/{env}/
