@@ -40,8 +40,15 @@ functions:
     handler: get/index.handler
     events:
       - http:
-          path: /{component}/{env}
+          path: /{component}/{env}/{id}
           method: get
+  list:
+    handler: list.index
+    events:
+      - http:
+          path: /{component}/{env}/
+          method: get
+          cors: true
 
 resources:
   Resources:
