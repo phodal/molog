@@ -12,10 +12,8 @@ const Log = struct({
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 module.exports.handler = (event, context, callback) => {
-
-  const timestamp = new Date().getTime();
   const parsedData = JSON.parse(event.body);
-  console.log(event, parsedData)
+  console.log(parsedData)
   if (!Log.test(parsedData)) {
     let result = Log.validate(parsedData)
     callback(null, {
@@ -30,6 +28,7 @@ module.exports.handler = (event, context, callback) => {
     return;
   }
 
+  const timestamp = new Date().getTime();
   const params = {
     TableName: process.env.DYNAMODB_TABLE,
     Item: {
