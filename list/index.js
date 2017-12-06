@@ -1,14 +1,17 @@
 const AWS = require('aws-sdk');
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
-const params = {
-  TableName: process.env.DYNAMODB_TABLE,
-};
 
 module.exports.list = (event, context, callback) => {
-  params.Key = {
-    env: event.pathParameters.env,
-    component: event.pathParameters.component,
+  let env = event.pathParameters.env;
+  let component = event.pathParameters.component;
+  const params = {
+    TableName: process.env.DYNAMODB_TABLE,
+    FilterExpression: 'env = :env and component = :component',
+    ExpressionAttributeValues: {
+      ':env': env,
+      ':component': component,
+    }
   };
   dynamoDb.scan(params, (error, result) => {
     if (error) {
