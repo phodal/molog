@@ -35,9 +35,9 @@ functions:
     handler: create/index.handler
     events:
       - http:
-          path: /
-          method: post
-          cors: treu
+          path: /{component}/{env}/
+          method: get
+          cors: true
   get:
     handler: get/index.handler
     events:
@@ -48,7 +48,7 @@ functions:
     handler: list/index.list
     events:
       - http:
-          path: /{component}/{env}/
+          path: /{component}/{env}/logs
           method: get
           cors: true
 
