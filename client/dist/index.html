@@ -9,6 +9,93 @@
   <link href="https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
   <link href="https://cdn.bootcss.com/simple-line-icons/2.4.1/css/simple-line-icons.min.css" rel="stylesheet">
+  <style>
+    .json-container {
+      font-size: 13px;
+      line-height: 1.2;
+      font-family: monospace;
+      padding-left: 0;
+      margin-left: 20px;
+    }
+    .json-container,
+    .json-container ul{
+      list-style: none !important;
+    }
+    .json-container ul{
+      padding: 0px !important;
+      padding-left: 20px !important;
+      margin: 0px !important;
+    }
+
+    .json-container li {
+      position: relative;
+    }
+
+    .json-container > li  > .key,
+    .json-container .array .key{
+      display: none;
+    }
+
+    .json-container .array .object .key{
+      display: inline;
+    }
+
+    .json-container li:after {
+      content: ",";
+    }
+
+    .json-container li:last-child:after {
+      content: "";
+    }
+
+    .json-container .null{
+      color: #999;
+    }
+    .json-container .string{
+      color: #4e9a06;
+    }
+    .json-container .number{
+      color: #a40000;
+    }
+    .json-container .boolean{
+      color: #c4a000;
+    }
+    .json-container .key{
+      color: #204a87;
+    }
+    .json-container .expanded{
+      cursor: pointer;
+    }
+
+    .json-container .expanded:before{
+      content: "-";
+      font-size: 16px;
+      width: 13px;
+      text-align: center;
+      line-height: 13px;
+      font-family: sans-serif;
+      color: #933;
+      position: absolute;
+      left: -15px;
+      top: 3px;
+    }
+
+    .json-container .collapsed:before{
+      content: "+";
+      font-size: 14px;
+      color: #000;
+      top: 1px;
+    }
+
+    .json-container li .collapsed ~ .json-close:before {
+      content: "... ";
+      color: #999;
+    }
+
+    .json-container .hidden ~ ul {
+      display: none;
+    }
+  </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -35,10 +122,13 @@
 <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+<script src="json-viewer.js"></script>
 <script>
 $( document ).ready(function() {
   $.get("https://log.pho.im/homepage/dev/logs", function(response) {
     for (var i = 0; i < response.length; i++) {
+      var itemJson = JSON.parse(response[i].data);
+      itemJson.ts = new Date(parseInt(itemJson.ts, 10));
       var itemId = 'item-' + i
       var $item = $("<div>", {
         id: itemId,
@@ -46,13 +136,33 @@ $( document ).ready(function() {
       })
       $('#logs').append($item)
 
-      var cardHeader = $("<div>", {class: 'card-header text-white'});
+
+      var cardColor = ''
+      var cardText = ''
+      switch (itemJson.t) {
+        case "0":
+          cardColor = 'bg-danger';
+          cardText = 'Error';
+          break;
+        case "1":
+          cardColor = 'bg-success';
+          cardText = 'Event';
+          break;
+        default:
+          cardColor = 'bg-success';
+          cardText = 'Others';
+      }
+
+      var cardHeader = $("<div>", {
+        class: 'card-header text-white ' + cardColor,
+        text: cardText
+      });
       $item.append(cardHeader)
 
       var cardBody = $("<div>", {
-        class: 'card-body',
-        text: JSON.stringify(JSON.parse(response[i].data))
+        class: 'card-body'
       });
+      cardBody.jsonview(itemJson); // Support json string/object
       $item.append(cardBody)
     }
   })
