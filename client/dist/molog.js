@@ -19,27 +19,45 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      * @return  void
      */
     init: function() {
-      this.environment();
+      this.component();
+      this.env();
       this.error();
       this.xhr();
     },
 
     /**
-     * Sets the environment from the "data-environment" attribute of corresponding script tag.
+     * Sets the component from the "data-component" attribute of corresponding script tag.
      * NOTE: It will only find the attribute when the framework's source contains 'sherlog' keyword.
      *
      * @return  void
      */
-    environment: function() {
+    component: function() {
       var s = doc.getElementsByTagName('script')
         , env;
       for( var i = 0, l = s.length; i < l; i++) {
-        if (s[i].src.indexOf('sherlog') > -1) {
-          env = s[i].getAttribute('data-environment');
+        if (s[i].src.indexOf('molog') > -1) {
+          env = s[i].getAttribute('data-component');
           break;
         }
       }
-      this.environment = env || '';
+      this.component = env || '';
+    },
+    /**
+     * Sets the env from the "data-env" attribute of corresponding script tag.
+     * NOTE: It will only find the attribute when the framework's source contains 'sherlog' keyword.
+     *
+     * @return  void
+     */
+    env: function() {
+      var s = doc.getElementsByTagName('script')
+        , env;
+      for( var i = 0, l = s.length; i < l; i++) {
+        if (s[i].src.indexOf('molog') > -1) {
+          env = s[i].getAttribute('data-env');
+          break;
+        }
+      }
+      this.env = env || '';
     },
 
     /**
@@ -158,9 +176,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     url: function() {
       var params  = '&t=' + this.type + '&d=' +
                     encodeURIComponent(JSON.stringify(this.data)) +
-                    '&cw=' + screen.width + '&ch=' + screen.height +
-                    '&e=' + encodeURIComponent(this.environment);
-      return (win.location.protocol+'//log.pho.im/homepage/dev/?ts='+(new Date().getTime())+params);
+                    '&cw=' + screen.width + '&ch=' + screen.height
+      return (win.location.protocol+'//log.pho.im/' + this.component + '/' + this.env + '/?ts='+(new Date().getTime())+params);
     },
 
     /**
