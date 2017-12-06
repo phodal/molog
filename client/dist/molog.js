@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 (function (win, doc, xhr) {
   'use strict';
 
-  var Sherlog = {
+  var Molog = {
 
     /**
      * Sets the resolution units and initializes the framework.
@@ -27,7 +27,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     /**
      * Sets the component from the "data-component" attribute of corresponding script tag.
-     * NOTE: It will only find the attribute when the framework's source contains 'sherlog' keyword.
+     * NOTE: It will only find the attribute when the framework's source contains 'Molog' keyword.
      *
      * @return  void
      */
@@ -44,7 +44,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     },
     /**
      * Sets the env from the "data-env" attribute of corresponding script tag.
-     * NOTE: It will only find the attribute when the framework's source contains 'sherlog' keyword.
+     * NOTE: It will only find the attribute when the framework's source contains 'Molog' keyword.
      *
      * @return  void
      */
@@ -208,7 +208,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         return;
       }
       try {
-        Sherlog.event(data);
+        Molog.event(data);
         // Uses the default context for this.
         // We don't have anything to expose to the user, so we don't pass `this` as the callback context
         cb.call(null);
@@ -216,8 +216,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
   };
 
-  Sherlog.init();
+  Molog.init();
 
-  win.Sherlog = win.Sherlog || Public;
+  win.Molog = win.Molog || Public;
 
 }(window, document, XMLHttpRequest));
