@@ -13,7 +13,7 @@ module.exports.list = (event, context, callback) => {
       callback(null, {
         statusCode: error.statusCode || 501,
         headers: { 'Content-Type': 'text/plain' },
-        body: 'Couldn\'t fetch the todos.',
+        body: 'couldn\'t fetch the logs.',
       });
       return;
     }
