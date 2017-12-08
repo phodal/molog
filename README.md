@@ -4,6 +4,8 @@
 
 Frontend based on [https://github.com/burakson/sherlogjs](https://github.com/burakson/sherlogjs)
 
+![Architecture](./doc/molog-architecture.png)
+
 Usage
 ---
 
