@@ -1,6 +1,6 @@
 {
   "name": "molog",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A Serverless frontend logs",
   "main": "index.js",
   "scripts": {
